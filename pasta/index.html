@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Controle de Tempo</title>
+    <link rel="stylesheet" href=".css"> 
+</head>
+<body>
+    <h1>Agora são exatamente:</h1>
+    <h2 id="relógio"></h2>
+
+    <script>
+         function atualizarRelogio(){
+            const agora = new Date();
+            const horas = agora.getHours().toString().
+            padStart(2,'0');
+            
+            const minutos = agora.getMinutes().toString().
+            padStart(2,'0');
+            const segundos = agora.getSeconds().toString().
+            padStart(2,'0');
+
+            document.getElementById('relógio').innerText = `${horas}:${minutos}:${segundos}`;
+
+         }
+         setInterval(atualizarRelogio, 1000);
+         atualizarRelogio();
+ 
+
+    </script>
+    <hr>
+    <div id="cronometro">00:00:00</div>
+
+    <div>
+        <button onclick="iniciar()">Iniciar</button>
+        <button onclick="pausar()">Pausar</button>
+        <button onclick="zerar()">Zerar</button>
+    </div>
+
+    <script>
+        let segundos = 0;
+        let intervalo;
+
+        function formatarTime(segundos) {
+            const h = String(Math.floor(segundos / 3600)).padStart(2, '0');
+            const m = String(Math.floor((segundos % 3600) / 60)).padStart(2, '0');
+            const s = String(segundos % 60).padStart(2, '0');
+            return `${h}:${m}:${s}`;
+        }
+
+        function atualizarCronometro() {
+            document.getElementById('cronometro').innerText = formatarTime(segundos);
+        }
+
+        function iniciar() {
+            if (!intervalo) {
+                intervalo = setInterval(() => {
+                    segundos++;
+                    atualizarCronometro();
+                }, 1000);
+            }
+        }
+
+        function pausar() {
+            if (intervalo) {
+                clearInterval(intervalo);
+                intervalo = null;
+            }
+        }
+
+        function zerar() {
+            pausar(); // Pausa o cronômetro antes de zerar
+            segundos = 0;
+            atualizarCronometro();
+        }
+    </script>
+</body>
+</html>
